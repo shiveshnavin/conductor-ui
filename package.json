@@ -47,7 +47,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prettier": "prettier --write .",
-    "serve-build": "http-server ./build --port 5000",
+    "serve-build": "node server.js",
     "cypress:open": "cypress open",
     "cypress:test": "BROWSER=none start-server-and-test serve-build http-get://localhost:5000 'cypress run; cypress run --component'"
   },
