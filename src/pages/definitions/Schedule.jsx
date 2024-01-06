@@ -33,7 +33,7 @@ export default function ScheduleDefinitions() {
         let newStatus = status;
         if (status == 'RUN') {
           newStatus = 'SHUTDOWN'
-        } else if (status == 'SHUTDOWN') {
+        } else {
           newStatus = 'RUN'
         }
         return (
