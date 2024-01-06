@@ -8,13 +8,57 @@ import Path from "../utils/path";
 
 const STALE_TIME_SEARCH = 60000; // 1 min
 
-export function useTask(taskName, defaultTask) {
+export function useSchedule(taskName, defaultTask) {
   let path;
   if (taskName) {
-    path = `/metadata/taskdefs/${taskName}`;
+    path = `/scheduling/metadata/scheduleWf/${taskName}`;
   }
-  return useFetch(["taskDef", taskName], path, {}, defaultTask);
+  return useFetch(["scheduleDef", taskName], path, {}, defaultTask);
 }
+
+export function useScheduleNames() {
+  const { data } = useScheduleDefs();
+  return useMemo(
+    () => (data ? Array.from(new Set(data.map((def) => def.name))).sort() : []),
+    [data]
+  );
+}
+
+export function useScheduleDefs() {
+  return useFetch(["scheduleDefs"], "/scheduling/metadata/scheduleWf");
+}
+
+export function useSaveSchedule(callbacks) {
+  const path = "/scheduling/metadata/scheduleWf";
+  const { fetchWithContext } = useAppContext();
+
+  return useMutation(({ body, isNew }) => {
+    return fetchWithContext(path + (isNew ? '' : '/' + body.wfName + "?status=" + body.status), {
+      method: isNew ? "post" : "put",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(isNew ? body : body), // Note: application of [] is opposite of workflow
+    });
+  }, callbacks);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export function useTaskSearch({ searchReady, ...searchObj }) {
   const { fetchWithContext, ready, stack } = useAppContext();
@@ -110,29 +154,7 @@ export function useQueueSizes(taskName, domains) {
   );
 }
 
-export function useTaskNames() {
-  const { data } = useTaskDefs();
-  return useMemo(
-    () => (data ? Array.from(new Set(data.map((def) => def.name))).sort() : []),
-    [data]
-  );
-}
 
 export function useTaskDefs() {
   return useFetch(["taskDefs"], "/metadata/taskdefs");
-}
-
-export function useSaveTask(callbacks) {
-  const path = "/metadata/taskdefs";
-  const { fetchWithContext } = useAppContext();
-
-  return useMutation(({ body, isNew }) => {
-    return fetchWithContext(path, {
-      method: isNew ? "post" : "put",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(isNew ? [body] : body), // Note: application of [] is opposite of workflow
-    });
-  }, callbacks);
 }

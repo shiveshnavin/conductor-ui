@@ -28,7 +28,8 @@ export default function FormikVersionDropdown(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [namesAndVersions, workflowName, workflowVersion]);
 
-  const versions = _.get(namesAndVersions, workflowName, []).map(
+  let cur = _.get(namesAndVersions, workflowName, []);
+  const versions = cur.map(
     (row) => "" + row.version
   );
 

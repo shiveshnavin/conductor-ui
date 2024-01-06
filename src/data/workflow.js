@@ -90,13 +90,21 @@ export function useWorkflowDefs() {
 }
 
 export function useWorkflowNamesAndVersions() {
-  return useFetch(
+  const { data } = useFetch(
     ["workflowNamesAndVersions"],
-    "/metadata/workflow/names-and-versions",
+    "/metadata/workflow",
     {
       staleTime: STALE_TIME_WORKFLOW_DEFS,
     }
   );
+  let namesAndVersions = {};
+  if (data) {
+    data.forEach(def => {
+      namesAndVersions[def.name] = [def]
+    });
+  }
+
+  return { data: namesAndVersions }
 }
 
 export function usePaginatedWorkflowDefs(from = 0, to = 15, filter = "") {

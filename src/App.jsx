@@ -23,6 +23,8 @@ import Examples from "./pages/kitchensink/Examples";
 import Gantt from "./pages/kitchensink/Gantt";
 
 import Workbench from "./pages/workbench/Workbench";
+import ScheduleDefinitions from "./pages/definitions/Schedule";
+import ScheduleDefinition from "./pages/definition/ScheduleDefinition";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -101,8 +103,14 @@ export default function App({
           <Route exact path="/taskDefs">
             <TaskDefinitions />
           </Route>
+          <Route exact path="/scheduleDefs">
+            <ScheduleDefinitions />
+          </Route>
           <Route exact path="/taskDef/:name?">
             <TaskDefinition />
+          </Route>
+          <Route exact path="/scheduleDef/:name?">
+            <ScheduleDefinition />
           </Route>
           <Route exact path="/eventHandlerDef">
             <EventHandlerDefinitions />
