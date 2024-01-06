@@ -12,7 +12,7 @@ const useStyles = makeStyles(sharedStyles);
 export default function ScheduleDefinitions() {
   const classes = useStyles();
   const { data: tasks, isFetching } = useScheduleDefs();
-
+  const { fetchWithContext } = useAppContext();
   const [loading, isLoading] = useState(false)
   const columns = [
     {
@@ -29,7 +29,6 @@ export default function ScheduleDefinitions() {
     {
       name: "status",
       renderer: (status, body) => {
-        const { fetchWithContext } = useAppContext();
 
         let newStatus = status;
         if (status == 'RUN') {
